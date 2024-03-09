@@ -1,11 +1,24 @@
 #!/usr/bin/python3
+"""_
+FileStorage class
+"""
 import json
 from models.base_model import BaseModel
 
 
 class FileStorage:
-    __file_path = 'data.json'
-    __objects = dict()
+    """
+    A class to manage storage of objects in JSON file
+    """
+    
+    __file_path = "file.json"
+    __objects = {}
+
+    def all(self) -> dict:
+        """
+        Returns a dictionary containing all objects
+        """
+        return FileStorage.__objects
     
     def new(self, object) -> None:
         """
