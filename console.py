@@ -10,6 +10,17 @@ class HBNBCommand(cmd.Cmd):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def do_quit(self):
+        """Quit command to exit the program"""
+        return True
+    
+    def do_EOF(self):
+        """EOF command to exit the program"""
+        return True
+
+    def do_help(self, line: str):
+        return super().do_help(line)
     
     def do_create(self, line):
         """
@@ -33,9 +44,6 @@ class HBNBCommand(cmd.Cmd):
         """
         
         return super().emptyline()
-    
-    def do_help(self, line: str):
-        return super().do_help(line)
     
     def do_show(self, line):
         """
@@ -123,13 +131,5 @@ class HBNBCommand(cmd.Cmd):
             except IndexError:
                 print("** instance id missing **")
         
-    def do_quit(self, line):
-        """Quit command to exit the program"""
-        return True
-    
-    def do_EOF(self, line):
-        """EOF command to exit the program"""
-        return True
-
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
