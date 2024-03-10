@@ -63,3 +63,5 @@ def test_str(self):
     self.assertTrue('id' in str_)
     self.assertTrue('created_at' in str_)
     self.assertTrue('updated_at' in str_)
+
+def test_
