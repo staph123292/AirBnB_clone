@@ -3,6 +3,7 @@ import cmd
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
+import re 
 
 class HBNBCommand(cmd.Cmd):
     """HBNBCommand class"""
@@ -42,9 +43,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Empty line input handler
         """
+        pass
         
-        return super().emptyline()
-    
     def do_show(self, line):
         """
         Prints the string representation of an instance based
@@ -130,6 +130,47 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
             except IndexError:
                 print("** instance id missing **")
+                
+    def do_count(self, arg):
+        """Retrieve the number of instances of a given class"""
+        args = arg.split()
+        count = 0
+        try:
+            for obj in storage.all().values():
+                if args[0] == obj.__class__.__name__:
+                    count += 1
+        except IndexError:
+            pass
+        print(count)
+        
+    def default(self, arg):
+        """Default behavior for cmd module when input is invalid"""
+        validcmds = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update
+        }
+
+        match = re.search(r"\.", arg)
+        if match is not None:
+            args = [arg[:match.span()[0]], arg[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", args[1])
+            if match is not None:
+                command = [args[1][:match.span()[0]], match.group()[1:-1]]
+                if command[0] in validcmds.keys():
+                    call = "{} {}".format(args[0], command[1])
+                    return validcmds[command[0]](call)
+        return super().default(arg)
+    
+    def help_EOF(self):
+        """Help command for EOF"""
+        print("EOF command to exit the program\n")
+    
+    def help_quit(self):
+        """Help command for EOF"""
+        print("EOF command to exit the program\n")
         
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
