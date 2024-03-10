@@ -47,11 +47,10 @@ def test_to_dict(self):
     """
     test the to dict method
     """
-    base_model = BaseModel()
-    base_model_dict = base_model.to_dict()
+    base_model_dict = self.base_model.to_dict()
     self.assertEqual(base_model_dict['__class__'], 'BaseModel')
-    self.assertEqual(base_model_dict['created_at'], base_model.created_at.isoformat())
-    self.assertEqual(base_model_dict['updated_at'], base_model.updated_at.isoformat())
+    self.assertEqual(base_model_dict['created_at'], self.base_model.created_at.isoformat())
+    self.assertEqual(base_model_dict['updated_at'], self.base_model.updated_at.isoformat())
     self.assertTrue('id' in base_model_dict)
     self.assertTrue('updated_at' in base_model_dict)
     self.assertTrue('created_at' in base_model_dict)
@@ -64,4 +63,15 @@ def test_str(self):
     self.assertTrue('created_at' in str_)
     self.assertTrue('updated_at' in str_)
 
-def test_
+def test_create_object_from_kwargs(self):
+    """
+    Test the creation of an object from keyword arguments
+    """
+    base_model_dict = {'id': uuid.uuid4().hex,
+                       'created_at': time.time(),
+                       'updated_at': time.time()}
+    base_model_2 = BaseModel(**base_model_dict)
+    self.isinstance(base_model_2, BaseModel)
+    self.assertEqual(self.base_model.id, base_model_2.id)
+    self.assertEqual(self.base_model.created_at, base_model_2.created_at)
+    self.assertEqual(self.base_model.updated_at, base_model_2.updated_at)
