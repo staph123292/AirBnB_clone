@@ -1,11 +1,9 @@
-#!/bin/bash/python3
+#!/usr/bin/python3
 import cmd
 import os
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
-import re
-import datetime
 
 class HBNBCommand(cmd.Cmd):
     """HBNBCommand class"""
