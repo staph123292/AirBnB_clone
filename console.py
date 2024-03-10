@@ -12,15 +12,15 @@ class HBNBCommand(cmd.Cmd):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def do_quit(self):
+    def do_quit(self, line):
         """Quit command to exit the program"""
         return True
     
-    def do_EOF(self):
+    def do_EOF(self, line):
         """EOF command to exit the program"""
         return True
 
-    def do_help(self, line: str):
+    def do_help(self, line):
         return super().do_help(line)
     
     def do_create(self, line):
@@ -39,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
             except KeyError:
                 print("** class doesn't exist **")
     
-    def emptyline(self) -> bool:
+    def emptyline(self, line):
         """
         Empty line input handler
         """
@@ -131,9 +131,9 @@ class HBNBCommand(cmd.Cmd):
             except IndexError:
                 print("** instance id missing **")
                 
-    def do_count(self, arg):
+    def do_count(self, line):
         """Retrieve the number of instances of a given class"""
-        args = arg.split()
+        args = line.split()
         count = 0
         try:
             for obj in storage.all().values():
@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
             pass
         print(count)
         
-    def default(self, arg):
+    def default(self, line):
         """Default behavior for cmd module when input is invalid"""
         validcmds = {
             "all": self.do_all,
@@ -153,22 +153,22 @@ class HBNBCommand(cmd.Cmd):
             "update": self.do_update
         }
 
-        match = re.search(r"\.", arg)
+        match = re.search(r"\.", line)
         if match is not None:
-            args = [arg[:match.span()[0]], arg[match.span()[1]:]]
+            args = [line[:match.span()[0]], line[match.span()[1]:]]
             match = re.search(r"\((.*?)\)", args[1])
             if match is not None:
                 command = [args[1][:match.span()[0]], match.group()[1:-1]]
                 if command[0] in validcmds.keys():
                     call = "{} {}".format(args[0], command[1])
                     return validcmds[command[0]](call)
-        return super().default(arg)
+        return super().default(line)
     
-    def help_EOF(self):
+    def help_EOF(self, line):
         """Help command for EOF"""
         print("EOF command to exit the program\n")
     
-    def help_quit(self):
+    def help_quit(self, line):
         """Help command for EOF"""
         print("EOF command to exit the program\n")
         
