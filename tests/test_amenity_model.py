@@ -1,24 +1,22 @@
 #!/usr/bin/python3
-
 """
-Test the Amenity class
+Amenity Test module
+
+This module contains test cases for the amenity model
 """
 
 import unittest
 from models.amenity import Amenity
 
+
 class TestAmenity(unittest.TestCase):
-    """
-    Test the Amenity class
-    """
-    
+    """Amenity model test class"""
+
     def test_attributes(self):
-        """
-        Test the presence of attributes in the Amenity class
-        """
-        amenity = Amenity()
-        self.assertTrue(hasattr(amenity, "id"))
-        self.assertTrue(hasattr(amenity, "created_at"))
-        self.assertTrue(hasattr(amenity, "updated_at"))
-        self.assertTrue(hasattr(amenity, "name"))
-        self.assertEqual(amenity.name, "")
+        """Test that the appropriate attributes are set"""
+        a = Amenity()
+        self.assertTrue(hasattr(a, "id"))
+        self.assertTrue(hasattr(a, "created_at"))
+        self.assertTrue(hasattr(a, "updated_at"))
+        self.assertTrue(hasattr(a, 'name'))
+        self.assertEqual(a.name, "")
