@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import cmd
-import os
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
@@ -35,8 +34,8 @@ class HBNBCommand(cmd.Cmd):
         
         return super().emptyline()
     
-    def do_help(self, arg: str) -> bool | None:
-        return super().do_help(arg)
+    def do_help(self, line: str):
+        return super().do_help(line)
     
     def do_show(self, line):
         """
