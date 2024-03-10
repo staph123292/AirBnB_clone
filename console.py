@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
                 attribute_value = line[3][1:-1]
                 
                 if attribute_name in ["created_at", "updated_at"]:
-                    print(f"Can't update {attribute_name}")
+                    print("Can't update {attribute_name}")
                     return
                 if hasattr(objects, attribute_name):
                     attribute_value = type(getattr(objects, attribute_name))(attribute_value)
