@@ -5,7 +5,7 @@ User Test Modul
 This module contains test cases for the user model
 """
 import os
-from models import storage
+from models.engine import FileStorage
 import unittest
 from datetime import datetime
 from time import sleep
