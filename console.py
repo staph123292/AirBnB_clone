@@ -3,16 +3,28 @@
 import cmd
 import sys
 from models.base_model import BaseModel
+<<<<<<< HEAD
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
+=======
+from models.engine.file_storage import FileStorage
+from models import storage
+import re 
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+>>>>>>> 773d8ee2febd506fec02a64a17f546c70f5f8313
 from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
+<<<<<<< HEAD
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
@@ -40,6 +52,29 @@ class HBNBCommand(cmd.Cmd):
 
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
+=======
+    """HBNBCommand class"""
+    prompt = '(hbnb) '
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def do_quit(self, line):
+        """Quit command to exit the program"""
+        return True
+    
+    def do_EOF(self, line):
+        """EOF command to exit the program"""
+        return True
+
+    def do_help(self, line):
+        return super().do_help(line)
+    
+    def do_create(self, line):
+        """
+        Creates a new instance of BaseModel
+        And saves it into a json file
+>>>>>>> 773d8ee2febd506fec02a64a17f546c70f5f8313
         """
         _cmd = _cls = _id = _args = ''  # initialize line elements
 
@@ -118,6 +153,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
+<<<<<<< HEAD
         elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -142,6 +178,28 @@ class HBNBCommand(cmd.Cmd):
             c_id = c_id.partition(' ')[0]
 
         if not c_name:
+=======
+        else:
+            try:
+                new_instance = BaseModel()
+                new_instance.save()
+                print(new_instance.id)
+            except KeyError:
+                print("** class doesn't exist **")
+    
+    def emptyline(self, line):
+        """
+        Empty line input handler
+        """
+        pass
+        
+    def do_show(self, line):
+        """
+        Prints the string representation of an instance based
+        on the class name and id
+        """
+        if not line:
+>>>>>>> 773d8ee2febd506fec02a64a17f546c70f5f8313
             print("** class name missing **")
             return
 
@@ -306,6 +364,7 @@ class HBNBCommand(cmd.Cmd):
                 if not att_val:  # check for att_value
                     print("** value missing **")
                     return
+<<<<<<< HEAD
                 # type cast as necessary
                 if att_name in HBNBCommand.types:
                     att_val = HBNBCommand.types[att_name](att_val)
@@ -322,3 +381,67 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+=======
+                
+                attribute_name = line[2]
+                attribute_value = line[3][1:-1]
+                
+                if attribute_name in ["created_at", "updated_at"]:
+                    print("Can't update {attribute_name}")
+                    return
+                if hasattr(objects, attribute_name):
+                    attribute_value = type(getattr(objects, attribute_name))(attribute_value)
+                    setattr(objects, attribute_name, attribute_value)
+                    objects.save()
+                else:
+                    setattr(objects, attribute_name, attribute_value)
+                    objects.save()
+            except KeyError:
+                print("** class doesn't exist **")
+            except IndexError:
+                print("** instance id missing **")
+                
+    def do_count(self, line):
+        """Retrieve the number of instances of a given class"""
+        args = line.split()
+        count = 0
+        try:
+            for obj in storage.all().values():
+                if args[0] == obj.__class__.__name__:
+                    count += 1
+        except IndexError:
+            pass
+        print(count)
+        
+    def default(self, line):
+        """Default behavior for cmd module when input is invalid"""
+        validcmds = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update
+        }
+
+        match = re.search(r"\.", line)
+        if match is not None:
+            args = [line[:match.span()[0]], line[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", args[1])
+            if match is not None:
+                command = [args[1][:match.span()[0]], match.group()[1:-1]]
+                if command[0] in validcmds.keys():
+                    call = "{} {}".format(args[0], command[1])
+                    return validcmds[command[0]](call)
+        return super().default(line)
+    
+    def help_EOF(self, line):
+        """Help command for EOF"""
+        print("EOF command to exit the program\n")
+    
+    def help_quit(self, line):
+        """Help command for EOF"""
+        print("EOF command to exit the program\n")
+        
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
+>>>>>>> 773d8ee2febd506fec02a64a17f546c70f5f8313
